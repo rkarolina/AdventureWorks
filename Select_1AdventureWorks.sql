@@ -152,3 +152,146 @@ FROM HumanResources.Employee e
 WHERE JobTitle IN ('Marketing Specialist', 'Control Specialist', 'Accounts Receivable Specialist', 'Benefits Specialist')
 ORDER BY JobTitle
 
+SELECT * FROM Person.Address
+WHERE
+	PostalCode LIKE '[89]47%' -- ONLY 8 OR 9 as first characters
+
+SELECT * FROM Person.Address
+WHERE
+	PostalCode LIKE '[^89]%'
+
+SELECT * FROM Person.Address
+WHERE
+	PostalCode LIKE '____' --shows only 4 characters records
+
+	SELECT * FROM Person.Address
+WHERE
+	PostalCode LIKE '___' -- 3 characters
+
+SELECT * FROM Person.Address
+WHERE
+	PostalCode LIKE '6___' --4 characters but first character is '6'
+
+SELECT * FROM Production.ProductDescription
+UPDATE Production.ProductDescription
+	SET Description = 'Very good quality 100% guarantee'
+	WHERE ProductDescriptionID = 1607
+
+SELECT * FROM Production.ProductDescription
+	WHERE Description like '%' --do not work with searching of '%'
+
+--possible solution 1
+SELECT * FROM Production.ProductDescription
+	WHERE Description like '%[%]%' -- put '%' into square bracket
+
+--possible solution 2
+SELECT * FROM Production.ProductDescription
+	WHERE Description like '%\%%' ESCAPE '\'
+
+-- Task 1 - show only records containing "Specialist" in JobTitle column
+SELECT JobTitle FROM HumanResources.Employee
+	WHERE JobTitle LIKE '%Specialist%'
+
+--Task 2 - show only records containing "Specialist" and "Marketing" in JobTitle column
+SELECT * FROM HumanResources.Employee
+	WHERE JobTitle LIKE '%Specialist%' AND JobTitle LIKE '%Marketing%'
+
+--Task 3 - show only records containing "Specialist" OR "Marketing" in JobTitle column
+SELECT * FROM HumanResources.Employee
+	WHERE JobTitle LIKE '%Specialist%' OR JobTitle LIKE '%Marketing%'
+
+--Task 4 - show only records containing at least 1 digit in the Name column
+SELECT * FROM Production.Product
+	WHERE [Name] LIKE '%[0-9]%'
+
+--Task 5 - show only records containing 2 digits in the Name column
+SELECT * FROM Production.Product
+	WHERE [Name] LIKE '%[0-9][0-9]%'
+
+SELECT * FROM Production.Product ---- co to robi w takim razie?
+	WHERE [Name] LIKE '%[0-9]__%'
+
+--Task 6 - show only records containing 2 digits but without digit at the end 
+SELECT * FROM Production.Product
+	WHERE [Name] LIKE '%[0-9][0-9]%[^0-9]'
+
+--Task 7 - show only records with 4 characters in the Name column
+SELECT * FROM Production.Product
+	WHERE [Name] LIKE '____'
+
+SELECT * FROM Production.Product -- 5 characters
+	WHERE [Name] LIKE '_____'
+
+SELECT 
+	p.BusinessEntityID
+	,p.LastName
+	,p.FirstName
+FROM Person.Person p 
+WHERE p.BusinessEntityID = 163
+
+SELECT 
+	e.BusinessEntityID
+	,e.LoginID
+FROM HumanResources.Employee e
+WHERE e.BusinessEntityID = 163
+
+SELECT 
+	 LastName
+	,FirstName
+	,LoginID
+FROM Person.Person
+JOIN HumanResources.Employee 
+	ON Person.Person.BusinessEntityID = HumanResources.Employee.BusinessEntityID
+
+SELECT 
+	 p.LastName
+	,p.FirstName
+	,e.LoginID
+FROM Person.Person p
+JOIN HumanResources.Employee e
+	ON p.BusinessEntityID = e.BusinessEntityID
+
+--Task 1 - add new column 
+SELECT
+	sod.UnitPrice 
+	,sod.OrderQty
+	,sod.UnitPrice*OrderQty AS [Wartoœæ Sprzedazy]
+FROM Sales.SalesOrderDetail sod
+
+--Task 2
+SELECT --DISTINCT UnitPriceDiscount --FROM
+	sod.UnitPrice 
+	,sod.OrderQty
+	,sod.UnitPriceDiscount
+	,sod.OrderQty*(UnitPrice-UnitPriceDiscount) AS [OrderQty*(UnitPrice-UnitPriceDiscount)]
+	,sod.OrderQty*(UnitPrice*(1-UnitPriceDiscount)) AS [OrderQty*(UnitPrice*(1-UnitPriceDiscount))]
+FROM Sales.SalesOrderDetail sod
+ORDER BY UnitPriceDiscount DESC
+
+--Task 3
+SELECT 
+	sc.CardType + ':' + sc.CardNumber AS [Type and number of the card]
+FROM [Sales].[CreditCard] sc
+
+--Task 4 
+SELECT 
+	soh.SalesOrderNumber
+	,soh.PurchaseOrderNumber
+FROM [Sales].[SalesOrderHeader] soh
+
+--Task 5 - NULL values
+SELECT 
+	soh.SalesOrderNumber
+	,soh.PurchaseOrderNumber
+	,(soh.SalesOrderNumber + '-' +
+	soh.PurchaseOrderNumber) AS 'Sales Order Number - Purchase Order Number'
+FROM [Sales].[SalesOrderHeader] soh
+
+--Task 6 - avoiding NULL values
+SELECT 
+	soh.SalesOrderNumber
+	,soh.PurchaseOrderNumber
+	,CONCAT(soh.SalesOrderNumber,'-'
+	,soh.PurchaseOrderNumber) AS 'Sales Order Number - Purchase Order Number with CONCAT function'
+FROM [Sales].[SalesOrderHeader] soh
+
