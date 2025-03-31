@@ -20,4 +20,4 @@ SWITCH(
 ```
 
 <b>Output:</b>
-![Employees Age](img/Employees_Age.jpg)
+![Employees Age](../img/Employees_Age.jpg)
