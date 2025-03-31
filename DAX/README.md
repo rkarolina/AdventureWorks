@@ -1,8 +1,3 @@
-## Introduction
-
-The aim of this project is to practice SQL queries and their usage with <b>Power BI</b> dashboards.
-The data used in this project is imported from the sample AdventureWorks database.
-
 ### Adding measures in AdventureWorks tables
 
 - I've added a new columns into the <b>HumanResources Employee</b> table in order to calculate the age of each employee using DAX formulas:
